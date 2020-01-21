@@ -1,0 +1,10 @@
+Package: LLsim
+Type: Package
+Title: Line List Simulator
+Version: 0.1.0
+Author: Juliet R. C. Pulliam
+Maintainer: Juliet R. C. Pulliam <pulliam@sun.ac.za>
+Description: Line list simulator for use in testing methods and practicing outbreak analysis.
+License: GPLv3.0 (see LICENSE)
+Encoding: UTF-8
+LazyData: true
