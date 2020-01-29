@@ -1,4 +1,4 @@
 library(testthat)
 library(LLsim)
 
-test_check("LLsim")
+#test_check("LLsim")

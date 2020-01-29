@@ -14,4 +14,4 @@ get_inc <- function(number, shape, rate){rgamma(number,shape,rate)} #@ Allow non
 get_inf <- function(number, shape, rate){rgamma(number,shape,rate)} #@ Allow non-gamma options
 
 ## Calculate total transmission rate
-calcTransRate <- function(beta, S = sum(is.na(pop$doi)), I = sum(pop$ill), N = nrow(pop)){beta * S * I / N}
+calcTransRate <- function(beta, S, I, N){beta * S * I / N}
