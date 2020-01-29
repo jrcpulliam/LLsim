@@ -18,7 +18,31 @@ runSim <- function(parms, cont, simFun = simpleSim){
 #   # CONT: initial_cases = 1, max_time = 365, seed = 20200121, initDate
 #   with(c(parms, cont),{
 
-simpleSim <- function(inc_mean_param, inf_mean_param, R_0, case_fatality, pop_size, inc_shape_param = 1, inf_shape_param = 1, initial_cases = 1, max_time = 365, seed = 20200129, browse = FALSE){  
+#' Simple SIR simulation
+#'
+#' \code{simpleSim} runs a stochastic SIR model with gamma-distributed waiting
+#' times.
+#'
+#' TODO: Add more details later
+#'
+#' @param inc_mean_param Mean of the incubation period distribution
+#' @param inf_mean_param Mean of the infectious period
+#' @param R_0 Basic reproductive number
+#' @param case_fatality Proportion of cases that die
+#' @param pop_size Size of the population
+#' @param inc_shape_param Shape parameter of the incubation period distribution
+#'   (default = 1)
+#' @param inf_shape_param Shape parameter of the infectious period distribution
+#'   (default = 1)
+#' @param initial_cases Initial number of cases (default = 1)
+#' @param max_time Maximum time for the simulation to run (default = 365)
+#' @param seed Seed for the random number generator (default = 20200129)
+#'   
+#' @return Returns a list with two dataframes: \code{pop}, the full population on which the simulation was run, and \code{cases} a preliminary line list (perfect reporting)
+#' 
+#' TODO: Add more detail
+#' 
+simpleSim <- function(inc_mean_param, inf_mean_param, R_0, case_fatality, pop_size, inc_shape_param = 1, inf_shape_param = 1, initial_cases = 1, max_time = 365, seed = 20200129){  
 
   set.seed(seed)
   
@@ -59,9 +83,8 @@ simpleSim <- function(inc_mean_param, inf_mean_param, R_0, case_fatality, pop_si
   pop$ill[tmp] <- TRUE
   
   ## Initialize simulation
-  time <- pop$doo[tmp]
-  if(browse) browser()
-  
+  time <- min(pop$doo[tmp])
+
   ## Simulation
   while(time < max_time & any(is.na(pop$dor))){
     tot_trans_rate <- calcTransRate(beta, S = sum(is.na(pop$doi)), I = sum(pop$ill), N = pop_size)
