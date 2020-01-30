@@ -38,6 +38,8 @@ createLineList <- function(cases, obs_prob, mean_report_delay, mean_confirm_dela
     cases$observed <- rbinom(nrow(cases), 1, obs_prob)
     
     cases$reported <- ifelse(cases$observed, cases$doo + rpois(nrow(cases), lambda = mean_report_delay), NA)
+    cases$doc <- ifelse(cases$observed, cases$reported + rpois(nrow(cases), lambda = mean_confirm_delay), NA)
+
     cases$reported <- as.Date(floor(cases$reported), origin = zero_date)
     
     cases$doi <- as.Date(floor(cases$doi), origin = zero_date)
@@ -46,16 +48,16 @@ createLineList <- function(cases, obs_prob, mean_report_delay, mean_confirm_dela
     cases$dod <- ifelse(cases$died == TRUE, cases$dor, NA)
     cases$dod <- as.Date(floor(cases$dod), origin = zero_date)
     
-    cases$dor <- as.Date(floor(cases$dor), origin = zero_date)
+    cases$dor <- as.Date(floor(cases$dor), origin = zero_date) # Date of removal
     
-    cases$doc <- ifelse(cases$observed, cases$reported + rpois(nrow(cases), lambda = mean_confirm_delay), NA)
     cases$doc <- as.Date(floor(cases$doc), origin = zero_date)
     cases$status <- ifelse(cases$doc <= obs_date, 'confirmed', 'suspected')
     cases$status[cases$reportDate > cases$deathDate] <- 'probable'
     
-    obs <- subset(cases, observed == TRUE, select = c(id, doo, dod, reported, status))
-    names(obs) <- c('caseID', 'onsetDate', 'deathDate', 'reportDate', 'status')
+    obs <- subset(cases, observed == TRUE, select = c(id, doo, dod, reported, doc, status, source))
+    names(obs) <- c('caseID', 'onsetDate', 'deathDate', 'reportDate', 'confirmedDate', 'status', 'source')
     dat <- subset(obs, reportDate <= obs_date)
+    dat$source[!dat$source %in% dat$caseID] <- NA
     
     dat$deathDate[dat$deathDate > obs_date] <- NA
     

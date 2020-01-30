@@ -1,23 +1,3 @@
-## runSim.R
-##
-## Characteristics: stochastic, continuous time, includes heterogenous offspring
-## distribution for secondary cases
-##
-## Output: line listing (date of onset, date of death if applicable), known
-## exposure events (id, type, time), simulation inputs (including seed and
-## parameters), acutal infection tree
-
-runSim <- function(parms, cont, simFun = simpleSim){
-  out <- simFun(parms, cont)
-  return(out)
-}
-
-# simpleSim <- function(parms, cont){
-#   # PARMS: inc_mean_param, inf_mean_param, R_0, case_fatality, pop_size,
-#   # inc_shape_param = 1, inf_shape_param = 1
-#   # CONT: initial_cases = 1, max_time = 365, seed = 20200121, initDate
-#   with(c(parms, cont),{
-
 #' Simple SIR simulation
 #'
 #' \code{simpleSim} runs a stochastic SIR model with gamma-distributed waiting
@@ -140,6 +120,5 @@ simpleSim <- function(inc_mean_param, inf_mean_param, R_0, case_fatality, pop_si
   
   cases <- subset(pop, !is.na(doi))
   
-  return(list(cases = cases, pop = pop))
-  # })
+  return(list(pop = pop, cases = cases))
 }
