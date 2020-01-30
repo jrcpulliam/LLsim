@@ -3,9 +3,9 @@
 ## Characteristics: stochastic, continuous time, includes heterogenous offspring
 ## distribution for secondary cases
 ##
-## Output: line listing (date of onset, date of death if applicable), known 
-## exposure events (id, type, time), simulation inputs (including seed and parameters),
-## acutal infection tree
+## Output: line listing (date of onset, date of death if applicable), known
+## exposure events (id, type, time), simulation inputs (including seed and
+## parameters), acutal infection tree
 
 runSim <- function(parms, cont, simFun = simpleSim){
   out <- simFun(parms, cont)
@@ -37,10 +37,14 @@ runSim <- function(parms, cont, simFun = simpleSim){
 #' @param initial_cases Initial number of cases (default = 1)
 #' @param max_time Maximum time for the simulation to run (default = 365)
 #' @param seed Seed for the random number generator (default = 20200129)
-#'   
-#' @return Returns a list with two dataframes: \code{pop}, the full population on which the simulation was run, and \code{cases} a preliminary line list (perfect reporting)
-#' 
-#' TODO: Add more detail
+#'
+#' @return Returns a list with two dataframes: \code{pop}, the full population
+#'   on which the simulation was run, and \code{cases} a preliminary line list
+#'   (perfect reporting)
+#'
+#'   TODO: Add more detail
+#'
+#' @export
 #' 
 simpleSim <- function(inc_mean_param, inf_mean_param, R_0, case_fatality, pop_size, inc_shape_param = 1, inf_shape_param = 1, initial_cases = 1, max_time = 365, seed = 20200129){  
 
