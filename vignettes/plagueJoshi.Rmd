@@ -1,0 +1,80 @@
+---
+title: "Simulated line list for an outbreak of pneumonic plague"
+author: Juliet R.C. Pulliam
+date: 
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{plagueJoshi}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+  
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+This vignette shows how to generate simulated line lists using the `LLsim` package, and how to visulize the output using the `incidence` and `epicontacts` packages from the R Epidemics Consortium (RECON). We start by loading the `LLsim` library:
+
+```{r setup}
+library(LLsim)
+```
+
+```{r, echo = FALSE}
+if (!requireNamespace("incidence", quietly = TRUE)){
+  stop("Package \"incidence\" needed for this vignette to work. Please install it.",
+       call. = FALSE)
+  }
+if (!requireNamespace("epicontacts", quietly = TRUE)){
+  stop("Package \"epicontacts\" needed for this vignette to work. Please install it.",
+       call. = FALSE)
+  }
+```
+
+The epidemic simulation is done using the `simpleSim()` function, as follows:
+
+```{r}
+out <- simpleSim(inc_mean_param = 4.5,
+                 inf_mean_param = 5,
+                 R_0 = 1.3,
+                 case_fatality = .17,
+                 pop_size = 100,
+                 inc_shape_param = 2.3,
+                 inf_shape_param = 2.3,
+                 seed = 53274828)
+```
+
+The parameters of the incubation and infectious period distributions used for this simulation represent estimates for pnuemonic plague in India, as described in Joshi _et al_. (2009) _Trans Roy Soc Trop Med Hyg_ 103: 455-460 ([link](htpp://dx.doi.org/10.1016/j.trstmh.2008.11.026)). The $R_0$ value is set based on the estimate of Gani and Leach (2004) _Emerg Infect Dis_ 10(4): 608-614 ([link](https://dx.doi.org/10.3201/eid1004.030509)).
+
+The function returns two objects: `pop`, which has `r nrow(out$pop)` rows, each representing an individual in the population, and `cases`, which has `r nrow(out$cases)` rows, each representing an individual infected during the course of the simulated epidemic. 
+
+Next, we use the function `createLineList()` to create a line list of observed cases from the set of all cases, as follows:
+
+```{r}
+ll <- createLineList(out$cases,
+                     obs_prob = 0.8,
+                     mean_report_delay = 2,
+                     mean_confirm_delay = 4,
+                     zero_date = '2019-01-02',
+                     obs_date = '2020-01-30')
+```
+
+Because the individual observation probability was set to 0.8, not all cases that occurred appear in the line list, which only has `r nrow(ll)` rows. The line list generated has the following structure:
+
+```{r, echo = FALSE}
+knitr::kable(head(ll, 10), row.names = FALSE)
+```
+
+Now that we have a simulated line list, we can use it to generate visualizations via the `incidence` and `epicontacts` packages, as follows:
+
+```{r, fig.align='center', fig.width=6, fig.height=3}
+inc <- incidence::incidence(dates = ll$onsetDate, interval = 'week')
+plot(inc)
+```
+
+```{r}
+ec <- epicontacts::make_epicontacts(ll, subset(ll, select = c('caseID','source')), id = 1L, from = 2L, to = 1L, directed = TRUE)
+plot(ec)
+```

@@ -18,4 +18,5 @@ test_that("Simulation outputs are as expected", {
   expect_true(all(out$cases$doi < out$cases$doo))
   expect_true(all(out$cases$doo < out$cases$dor))
   expect_false(any(out$cases$ill))
+  expect_false(any(duplicated(out$cases$id)))
 })
