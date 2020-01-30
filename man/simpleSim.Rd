@@ -41,9 +41,11 @@ simpleSim(
 \item{seed}{Seed for the random number generator (default = 20200129)}
 }
 \value{
-Returns a list with two dataframes: \code{pop}, the full population on which the simulation was run, and \code{cases} a preliminary line list (perfect reporting)
+Returns a list with two dataframes: \code{pop}, the full population
+  on which the simulation was run, and \code{cases} a preliminary line list
+  (perfect reporting)
 
-TODO: Add more detail
+  TODO: Add more detail
 }
 \description{
 \code{simpleSim} runs a stochastic SIR model with gamma-distributed waiting

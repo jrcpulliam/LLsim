@@ -1,6 +1,6 @@
 # Main README file for LLsim package
 
-Line lists are a common form of data used in outbreak investigation and analysis, with representing each known case of a disease and columns that include details about the case such as the date of onset of symptoms and the date of reporting to a health facility.
+Line lists are a common form of data used in outbreak investigation and analysis, with rows representing each known case of a disease and columns that include details about the case, such as the date of onset of symptoms and the date of reporting to a health facility.
 
 > This project provides a line list simulator for use in testing methods and practicing outbreak analysis
 
